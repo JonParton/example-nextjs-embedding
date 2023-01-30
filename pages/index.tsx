@@ -1,20 +1,8 @@
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Token } from "./api/token";
 
-export const getServerSideProps = async () => {
-  const tokenResult = await fetch("/api/token");
-  const token: Token = await tokenResult.json();
-
-  return {
-    props: { token }, // will be passed to the page component as props
-  };
-};
-
-const Home = ({
-  token,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = () => {
   return (
     <>
       <Head>
@@ -26,7 +14,14 @@ const Home = ({
       <main className={styles.main}>
         <div className={styles.description}>
           <p>Example embedding Cumulio</p>
-          <pre>{JSON.stringify(token, null, 2)}</pre>
+        </div>
+        <div className={styles.grid}>
+          <a className={styles.card} href="/normalImport">
+            Go To Normal Import Example
+          </a>
+          <a className={styles.card} href="/esmImport">
+            Go To ESM Import Example
+          </a>
         </div>
       </main>
     </>
