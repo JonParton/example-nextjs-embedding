@@ -2,11 +2,19 @@ import { InferGetServerSidePropsType } from "next";
 import Cumulio from "cumulio";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import {
-  CumulioDashboard,
-  CumulioDashboardComponent,
-} from "@cumul.io/react-cumulio-dashboard";
+import { CumulioDashboard } from "@cumul.io/react-cumulio-dashboard";
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+
+const CumulioDashboardComponent = dynamic(
+  () =>
+    import("@cumul.io/react-cumulio-dashboard").then(
+      (mod) => mod.CumulioDashboardComponent
+    ),
+  {
+    ssr: false,
+  }
+);
 
 export interface Token {
   last_used_at: Date;
@@ -71,7 +79,7 @@ export const getServerSideProps = async () => {
 const Home = ({
   token,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const ref = useRef<CumulioDashboard>(null);
+  const dashboardRef = useRef<CumulioDashboard>(null);
 
   // Only render on the client
   const [isClient, setIsClient] = useState(false);
@@ -88,11 +96,25 @@ const Home = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.description}>
+        <div
+          style={{
+            width: "100%",
+          }}
+        >
           <p>Example embedding Cumulio</p>
+          <button
+            onClick={() => {
+              if (dashboardRef.current) {
+                console.log(dashboardRef.current);
+                dashboardRef.current.exportDashboard();
+              }
+            }}
+          >
+            Export Dashboard
+          </button>
           {isClient && (
             <CumulioDashboardComponent
-              ref={ref}
+              ref={dashboardRef}
               authKey={token.id}
               authToken={token.token}
               dashboardSlug="singledrilloverview"
