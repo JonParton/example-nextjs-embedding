@@ -1,5 +1,6 @@
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
 const Home = () => {
@@ -16,12 +17,9 @@ const Home = () => {
           <p>Example embedding Cumulio</p>
         </div>
         <div className={styles.grid}>
-          <a className={styles.card} href="/normalImport">
-            Go To Normal Import Example
-          </a>
-          <a className={styles.card} href="/esmImport">
-            Go To ESM Import Example
-          </a>
+          <Link className={styles.card} href="/dashboard">
+            Go To Embedded Dashbaord
+          </Link>
         </div>
       </main>
     </>
