@@ -81,12 +81,6 @@ const Home = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const dashboardRef = useRef<CumulioDashboard>(null);
 
-  // Only render on the client
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
     <>
       <Head>
@@ -112,7 +106,6 @@ const Home = ({
           >
             Export Dashboard
           </button>
-          {isClient && (
             <CumulioDashboardComponent
               ref={dashboardRef}
               authKey={token.id}
@@ -123,7 +116,6 @@ const Home = ({
               loaderSpinnerBackground="rgb(236 248 255)"
               itemsRendered={(_e: any) => console.log("itemsRendered", _e)}
             />
-          )}
           <pre>{JSON.stringify(token, null, 2)}</pre>
         </div>
       </main>
